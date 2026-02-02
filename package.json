@@ -112,6 +112,7 @@
     "fflate": "^0.8.2",
     "fs-extra": "11.3.2",
     "hash-wasm": "^4.12.0",
+    "html2canvas": "^1.4.1",
     "idb-keyval": "^6.2.2",
     "js-yaml": "^4.1.1",
     "jwt-simple": "^0.5.6",

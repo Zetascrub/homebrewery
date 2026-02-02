@@ -5,7 +5,7 @@ import { Meta }                          from 'vitreum/headtags';
 import Nav from '../../navbar/nav.jsx';
 import Navbar from '../../navbar/navbar.jsx';
 import MetadataNav from '../../navbar/metadata.navitem.jsx';
-import PrintNavItem from '../../navbar/print.navitem.jsx';
+import ExportNavItem from '../../navbar/export.navitem.jsx';
 import RecentNavItems from '../../navbar/recent.navitem.jsx';
 const { both: RecentNavItem } = RecentNavItems;
 import Account from '../../navbar/account.navitem.jsx';
@@ -76,7 +76,7 @@ const SharePage = (props)=>{
 				<Nav.section>
 					{brew.shareId && (
 						<>
-							<PrintNavItem />
+							<ExportNavItem brewTitle={brew.title} />
 							<Nav.dropdown>
 								<Nav.item color='red' icon='fas fa-code'>
 									source
