@@ -10,6 +10,7 @@ services:
     image: homebrewery
     environment:
       MONGODB_URI: mongodb://mongodb/homebrewery
+      ANTHROPIC_API_KEY: your-api-key-here
     ports:
       - "8000:8000"
 volumes:

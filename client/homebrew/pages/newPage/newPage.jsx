@@ -224,6 +224,10 @@ const NewPage = (props)=>{
 		editorRef.current?.handleInject(text);
 	};
 
+	const handleClaudeReplace = (text)=>{
+		handleBrewChange('text')(text);
+	};
+
 	const renderNavbar = ()=>(
 		<Navbar>
 			<Nav.section>
@@ -236,7 +240,7 @@ const NewPage = (props)=>{
 					: renderSaveButton()}
 				<NewBrewItem />
 				<PrintNavItem />
-				<ClaudeNavItem brew={currentBrew} onInsert={handleClaudeInsert} />
+				<ClaudeNavItem brew={currentBrew} onInsert={handleClaudeInsert} onReplace={handleClaudeReplace} />
 				<HelpNavItem />
 				<VaultNavItem />
 				<RecentNavItem />

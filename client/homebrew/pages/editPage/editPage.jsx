@@ -351,6 +351,10 @@ const EditPage = (props)=>{
 		editorRef.current?.handleInject(text);
 	};
 
+	const handleClaudeReplace = (text)=>{
+		handleBrewChange('text')(text);
+	};
+
 	const renderNavbar = ()=>{
 		return <Navbar>
 			<Nav.section>
@@ -367,7 +371,7 @@ const EditPage = (props)=>{
 					</Nav.dropdown>}
 				<NewBrewItem />
 				<PrintNavItem />
-				<ClaudeNavItem brew={currentBrew} onInsert={handleClaudeInsert} />
+				<ClaudeNavItem brew={currentBrew} onInsert={handleClaudeInsert} onReplace={handleClaudeReplace} />
 				<HelpNavItem />
 				<VaultNavItem />
 				<ShareNavItem brew={currentBrew} />

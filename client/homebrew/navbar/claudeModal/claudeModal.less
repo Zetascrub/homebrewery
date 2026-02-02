@@ -55,8 +55,60 @@
 		}
 	}
 
+	.modeTabs {
+		display          : flex;
+		background-color : #f0f0f0;
+		border-bottom    : 1px solid #ddd;
+
+		.modeTab {
+			flex             : 1;
+			padding          : 12px 16px;
+			font-size        : 14px;
+			font-weight      : 500;
+			color            : #666;
+			background-color : transparent;
+			border           : none;
+			border-bottom    : 2px solid transparent;
+			cursor           : pointer;
+			transition       : all 0.2s;
+
+			i {
+				margin-right : 6px;
+			}
+
+			&:hover {
+				color            : #333;
+				background-color : #e8e8e8;
+			}
+
+			&.active {
+				color            : @purple;
+				background-color : #fafafa;
+				border-bottom    : 2px solid @purple;
+			}
+		}
+	}
+
 	.promptForm {
 		padding : 20px;
+
+		.formatInfo {
+			display          : flex;
+			align-items      : flex-start;
+			gap              : 10px;
+			padding          : 12px;
+			margin-bottom    : 12px;
+			font-size        : 13px;
+			color            : #555;
+			background-color : fade(@purple, 10%);
+			border           : 1px solid fade(@purple, 20%);
+			border-radius    : 6px;
+
+			i {
+				color     : @purple;
+				margin-top: 2px;
+			}
+		}
 
 		textarea {
 			width            : 100%;
