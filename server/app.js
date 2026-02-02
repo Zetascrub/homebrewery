@@ -71,11 +71,15 @@ const corsOptions = {
 			'https://homebrewery-stage.herokuapp.com',
 		];
 
+		// Add custom allowed origins from config (for self-hosted instances)
+		const customOrigins = config.get('allowed_origins') || [];
+		const allAllowedOrigins = [...allowedOrigins, ...customOrigins];
+
 		const localNetworkRegex = /^http:\/\/(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+):\d+$/;
 
 		const herokuRegex = /^https:\/\/(?:homebrewery-pr-\d+\.herokuapp\.com|naturalcrit-pr-\d+\.herokuapp\.com)$/; // Matches any Heroku app
 
-		if(!origin || allowedOrigins.includes(origin) || herokuRegex.test(origin) || (isLocalEnvironment && localNetworkRegex.test(origin))) {
+		if(!origin || allAllowedOrigins.includes(origin) || herokuRegex.test(origin) || (isLocalEnvironment && localNetworkRegex.test(origin))) {
 			callback(null, true);
 		} else {
 			console.log(origin, 'not allowed');
