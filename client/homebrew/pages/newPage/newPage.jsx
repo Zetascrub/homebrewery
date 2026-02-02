@@ -23,6 +23,7 @@ import HelpNavItem               from '../../navbar/help.navitem.jsx';
 import VaultNavItem              from '../../navbar/vault.navitem.jsx';
 import ExportNavItem             from '../../navbar/export.navitem.jsx';
 import ClaudeNavItem             from '../../navbar/claude.navitem.jsx';
+import ImageUploadNavItem        from '../../navbar/imageUpload.navitem.jsx';
 import RecentNavItems from '../../navbar/recent.navitem.jsx';
 const { both: RecentNavItem } = RecentNavItems;
 
@@ -240,6 +241,7 @@ const NewPage = (props)=>{
 					: renderSaveButton()}
 				<NewBrewItem />
 				<ExportNavItem brewTitle={currentBrew.title} />
+				<ImageUploadNavItem onInsert={handleClaudeInsert} />
 				<ClaudeNavItem brew={currentBrew} onInsert={handleClaudeInsert} onReplace={handleClaudeReplace} />
 				<HelpNavItem />
 				<VaultNavItem />

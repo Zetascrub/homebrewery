@@ -33,6 +33,7 @@ import { makePatches, stringifyPatches } from '@sanity/diff-match-patch';
 
 import ShareNavItem              from '../../navbar/share.navitem.jsx';
 import ClaudeNavItem             from '../../navbar/claude.navitem.jsx';
+import ImageUploadNavItem        from '../../navbar/imageUpload.navitem.jsx';
 import LockNotification from './lockNotification/lockNotification.jsx';
 import { updateHistory, versionHistoryGarbageCollection } from '../../utils/versionHistory.js';
 import googleDriveIcon from '../../googleDrive.svg';
@@ -372,6 +373,7 @@ const EditPage = (props)=>{
 				<NewBrewItem />
 				<ExportNavItem brewTitle={currentBrew.title} />
 				<ClaudeNavItem brew={currentBrew} onInsert={handleClaudeInsert} onReplace={handleClaudeReplace} />
+				<ImageUploadNavItem onInsert={handleClaudeInsert} />
 				<HelpNavItem />
 				<VaultNavItem />
 				<ShareNavItem brew={currentBrew} />
