@@ -536,9 +536,9 @@ if(isLocalEnvironment){
 app.use('/staticImages', express.static(config.get('hb_images') && fs.existsSync(config.get('hb_images')) ? config.get('hb_images') :'staticImages'));
 app.use('/staticFonts', express.static(config.get('hb_fonts')  && fs.existsSync(config.get('hb_fonts')) ? config.get('hb_fonts'):'staticFonts'));
 
-// Serve theme fonts from build directory (CSS references /themes/V3/fonts/ but fonts are at /build/fonts/)
-app.use('/themes/V3/fonts', express.static('build/fonts'));
-app.use('/themes/Legacy/fonts', express.static('build/fonts'));
+// Serve theme fonts (CSS references /themes/V3/fonts/ but fonts are at /themes/fonts/)
+app.use('/themes/V3/fonts', express.static('themes/fonts'));
+app.use('/themes/Legacy/fonts', express.static('themes/fonts'));
 
 //Vault Page
 app.get('/vault', asyncHandler(async(req, res, next)=>{
