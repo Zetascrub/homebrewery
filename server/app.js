@@ -52,6 +52,11 @@ const sanitizeBrew = (brew, accessType)=>{
 app.set('trust proxy', 1 /* number of proxies between user and server */);
 
 app.use('/', serveCompressedStaticAssets(`build`));
+
+// Serve theme fonts BEFORE content negotiation (which blocks image-like requests)
+app.use('/themes/V3/fonts', express.static('themes/fonts'));
+app.use('/themes/Legacy/fonts', express.static('themes/fonts'));
+
 app.use(contentNegotiation);
 app.use(bodyParser.json({ limit: '25mb' }));
 app.use(cookieParser());
@@ -535,10 +540,6 @@ if(isLocalEnvironment){
 // Add Static Local Paths
 app.use('/staticImages', express.static(config.get('hb_images') && fs.existsSync(config.get('hb_images')) ? config.get('hb_images') :'staticImages'));
 app.use('/staticFonts', express.static(config.get('hb_fonts')  && fs.existsSync(config.get('hb_fonts')) ? config.get('hb_fonts'):'staticFonts'));
-
-// Serve theme fonts (CSS references /themes/V3/fonts/ but fonts are at /themes/fonts/)
-app.use('/themes/V3/fonts', express.static('themes/fonts'));
-app.use('/themes/Legacy/fonts', express.static('themes/fonts'));
 
 //Vault Page
 app.get('/vault', asyncHandler(async(req, res, next)=>{
