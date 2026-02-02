@@ -32,6 +32,7 @@ import { gzipSync, strToU8 }             from 'fflate';
 import { makePatches, stringifyPatches } from '@sanity/diff-match-patch';
 
 import ShareNavItem              from '../../navbar/share.navitem.jsx';
+import ClaudeNavItem             from '../../navbar/claude.navitem.jsx';
 import LockNotification from './lockNotification/lockNotification.jsx';
 import { updateHistory, versionHistoryGarbageCollection } from '../../utils/versionHistory.js';
 import googleDriveIcon from '../../googleDrive.svg';
@@ -346,6 +347,14 @@ const EditPage = (props)=>{
 		setIsSaving(false);
 	};
 
+	const handleClaudeInsert = (text)=>{
+		editorRef.current?.handleInject(text);
+	};
+
+	const handleClaudeReplace = (text)=>{
+		handleBrewChange('text')(text);
+	};
+
 	const renderNavbar = ()=>{
 		return <Navbar>
 			<Nav.section>
@@ -362,6 +371,7 @@ const EditPage = (props)=>{
 					</Nav.dropdown>}
 				<NewBrewItem />
 				<PrintNavItem />
+				<ClaudeNavItem brew={currentBrew} onInsert={handleClaudeInsert} onReplace={handleClaudeReplace} />
 				<HelpNavItem />
 				<VaultNavItem />
 				<ShareNavItem brew={currentBrew} />

@@ -7,6 +7,7 @@ storage
 build/*
 config/local.*
 config/docker.*
+docker-compose.yml
 
 todo.md
 startDB.bat
