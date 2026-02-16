@@ -21,6 +21,7 @@ const { homebrewApi, getBrew, getUsersBrewThemes, getCSS } = api;
 import adminApi                    from './admin.api.js';
 import vaultApi                    from './vault.api.js';
 import claudeApi                   from './claude.api.js';
+import openaiApi                   from './openai.api.js';
 import imagesApi                   from './images.api.js';
 import GoogleActions               from './googleActions.js';
 import serveCompressedStaticAssets from './static-assets.mv.js';
@@ -121,6 +122,7 @@ app.use(homebrewApi);
 app.use(adminApi);
 app.use(vaultApi);
 app.use(claudeApi);
+app.use(openaiApi);
 app.use(imagesApi);
 
 const welcomeText       = fs.readFileSync('client/homebrew/pages/homePage/welcome_msg.md', 'utf8');

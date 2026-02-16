@@ -3,6 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import asyncHandler from 'express-async-handler';
+import config from './config.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const STATIC_IMAGES_DIR = path.join(__dirname, '..', 'staticImages');
@@ -138,6 +139,83 @@ router.post('/api/images/upload', asyncHandler(async (req, res)=>{
 		});
 	} catch (err) {
 		res.status(500).json({ error: `Upload failed: ${err.message}` });
+	}
+}));
+
+// Upload image to imgchest
+router.post('/api/images/upload-imgchest', asyncHandler(async (req, res)=>{
+	const token = config.get('imgchest_api_token');
+	if(!token) {
+		return res.status(503).json({ error: 'imgchest API token not configured' });
+	}
+
+	const { filename, data, privacy } = req.body;
+
+	if(!filename || !data) {
+		return res.status(400).json({ error: 'Missing filename or data' });
+	}
+
+	const ext = path.extname(filename).toLowerCase();
+	if(!['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext)) {
+		return res.status(400).json({ error: 'Invalid file type. Allowed: png, jpg, jpeg, gif, webp' });
+	}
+
+	const validPrivacy = ['public', 'hidden', 'secret'];
+	const postPrivacy = validPrivacy.includes(privacy) ? privacy : 'hidden';
+
+	try {
+		const base64Data = data.replace(/^data:image\/\w+;base64,/, '');
+		const buffer = Buffer.from(base64Data, 'base64');
+
+		if(!isValidImage(buffer)) {
+			return res.status(400).json({ error: 'Invalid image data' });
+		}
+
+		if(buffer.length > 10 * 1024 * 1024) {
+			return res.status(400).json({ error: 'File too large (max 10MB)' });
+		}
+
+		const mimeTypes = {
+			'.png'  : 'image/png',
+			'.jpg'  : 'image/jpeg',
+			'.jpeg' : 'image/jpeg',
+			'.gif'  : 'image/gif',
+			'.webp' : 'image/webp'
+		};
+
+		const blob = new Blob([buffer], { type: mimeTypes[ext] || 'application/octet-stream' });
+		const formData = new FormData();
+		formData.append('images[]', blob, filename);
+		formData.append('privacy', postPrivacy);
+		formData.append('title', path.basename(filename, ext));
+
+		const response = await fetch('https://api.imgchest.com/v1/post', {
+			method  : 'POST',
+			headers : { 'Authorization': `Bearer ${token}` },
+			body    : formData
+		});
+
+		if(!response.ok) {
+			const errBody = await response.text();
+			return res.status(response.status).json({ error: `imgchest API error: ${errBody}` });
+		}
+
+		const result = await response.json();
+		const image = result.data?.images?.[0];
+
+		if(!image?.link) {
+			return res.status(502).json({ error: 'imgchest did not return an image URL' });
+		}
+
+		res.json({
+			success  : true,
+			filename : image.original_name || filename,
+			url      : image.link,
+			size     : buffer.length,
+			postId   : result.data?.id
+		});
+	} catch (err) {
+		res.status(500).json({ error: `imgchest upload failed: ${err.message}` });
 	}
 }));
 

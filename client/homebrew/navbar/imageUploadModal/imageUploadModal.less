@@ -61,6 +61,92 @@
 		overflow-y : auto;
 	}
 
+	.uploadOptions {
+		margin-bottom : 16px;
+		padding       : 12px;
+		background    : white;
+		border        : 1px solid #e0e0e0;
+		border-radius : 6px;
+
+		.toggleRow {
+			display     : flex;
+			align-items : center;
+			justify-content : space-between;
+			cursor      : pointer;
+
+			.toggleLabel {
+				font-size   : 14px;
+				font-weight : 500;
+				color       : #444;
+
+				i {
+					margin-right : 8px;
+					color        : #888;
+				}
+			}
+
+			.toggleSwitch {
+				position      : relative;
+				display       : inline-block;
+				width         : 40px;
+				height        : 22px;
+				background    : #ccc;
+				border-radius : 11px;
+				transition    : background 0.2s;
+				cursor        : pointer;
+
+				.toggleKnob {
+					position      : absolute;
+					top           : 2px;
+					left          : 2px;
+					width         : 18px;
+					height        : 18px;
+					background    : white;
+					border-radius : 50%;
+					transition    : left 0.2s;
+					box-shadow    : 0 1px 3px rgba(0, 0, 0, 0.2);
+				}
+
+				&.active {
+					background : @green;
+
+					.toggleKnob {
+						left : 20px;
+					}
+				}
+			}
+		}
+
+		.privacyRow {
+			display     : flex;
+			align-items : center;
+			gap         : 8px;
+			margin-top  : 10px;
+			padding-top : 10px;
+			border-top  : 1px solid #f0f0f0;
+
+			.privacyLabel {
+				font-size : 13px;
+				color     : #666;
+			}
+
+			select {
+				padding       : 4px 8px;
+				font-size     : 13px;
+				border        : 1px solid #ddd;
+				border-radius : 4px;
+				background    : #fafafa;
+				color         : #444;
+				cursor        : pointer;
+
+				&:focus {
+					outline      : none;
+					border-color : @green;
+				}
+			}
+		}
+	}
+
 	.dropZone {
 		display          : flex;
 		flex-direction   : column;
@@ -181,6 +267,29 @@
 					overflow      : hidden;
 					text-overflow : ellipsis;
 					white-space   : nowrap;
+					display       : flex;
+					align-items   : center;
+					gap           : 6px;
+
+					.sourceBadge {
+						font-size     : 10px;
+						font-weight   : 600;
+						padding       : 1px 6px;
+						border-radius : 3px;
+						flex-shrink   : 0;
+						text-transform: uppercase;
+						letter-spacing: 0.3px;
+
+						&.imgchest {
+							color      : #2980b9;
+							background : fade(#2980b9, 12%);
+						}
+
+						&.local {
+							color      : #666;
+							background : #f0f0f0;
+						}
+					}
 				}
 
 				.imageSize {

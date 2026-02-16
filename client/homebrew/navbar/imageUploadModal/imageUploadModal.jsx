@@ -8,6 +8,8 @@ export default function ImageUploadModal({ onClose, onInsert }){
 	const [uploadedImages, setUploadedImages] = useState([]);
 	const [error, setError] = useState(null);
 	const [copied, setCopied] = useState(null);
+	const [useImgchest, setUseImgchest] = useState(false);
+	const [imgchestPrivacy, setImgchestPrivacy] = useState('hidden');
 
 	const dialogRef = useRef(null);
 	const fileInputRef = useRef(null);
@@ -59,19 +61,27 @@ export default function ImageUploadModal({ onClose, onInsert }){
 		setIsUploading(true);
 		setError(null);
 
+		const endpoint = useImgchest ? '/api/images/upload-imgchest' : '/api/images/upload';
+
 		for (const file of imageFiles) {
 			try {
 				const base64 = await fileToBase64(file);
+				const payload = {
+					filename : file.name,
+					data     : base64
+				};
+				if(useImgchest) {
+					payload.privacy = imgchestPrivacy;
+				}
+
 				const res = await request
-					.post('/api/images/upload')
-					.send({
-						filename : file.name,
-						data     : base64
-					});
+					.post(endpoint)
+					.send(payload);
 
 				setUploadedImages((prev)=>[{
 					...res.body,
-					originalName : file.name
+					originalName : file.name,
+					source       : useImgchest ? 'imgchest' : 'local'
 				}, ...prev]);
 			} catch (err) {
 				setError(`Failed to upload ${file.name}: ${err.response?.body?.error || err.message}`);
@@ -127,6 +137,34 @@ export default function ImageUploadModal({ onClose, onInsert }){
 			</div>
 
 			<div className='modalContent'>
+				<div className='uploadOptions'>
+					<label className='toggleRow'>
+						<span className='toggleLabel'>
+							<i className='fas fa-cloud' />
+							Upload to imgchest
+						</span>
+						<span
+							className={`toggleSwitch ${useImgchest ? 'active' : ''}`}
+							onClick={()=>setUseImgchest(!useImgchest)}
+						>
+							<span className='toggleKnob' />
+						</span>
+					</label>
+					{useImgchest && (
+						<label className='privacyRow'>
+							<span className='privacyLabel'>Privacy:</span>
+							<select
+								value={imgchestPrivacy}
+								onChange={(e)=>setImgchestPrivacy(e.target.value)}
+							>
+								<option value='hidden'>Hidden</option>
+								<option value='secret'>Secret</option>
+								<option value='public'>Public</option>
+							</select>
+						</label>
+					)}
+				</div>
+
 				<div
 					className={`dropZone ${isDragging ? 'dragging' : ''} ${isUploading ? 'uploading' : ''}`}
 					onDragOver={handleDragOver}
@@ -171,7 +209,11 @@ export default function ImageUploadModal({ onClose, onInsert }){
 									<img src={img.url} alt={img.originalName} />
 								</div>
 								<div className='imageInfo'>
-									<div className='imageName'>{img.filename}</div>
+									<div className='imageName'>
+										{img.filename}
+										{img.source === 'imgchest' && <span className='sourceBadge imgchest'>imgchest</span>}
+										{img.source === 'local' && <span className='sourceBadge local'>local</span>}
+									</div>
 									<div className='imageSize'>{formatSize(img.size)}</div>
 									<div className='imageUrl'>
 										<code>{img.url}</code>

@@ -8,6 +8,8 @@ import cx from 'classnames';
 
 import { loadHistory } from '../../utils/versionHistory.js';
 import { brewSnippetsToJSON } from '../../../../shared/helpers.js';
+import DndImportModal from '../../navbar/dndImportModal/dndImportModal.jsx';
+import StatGenModal from '../../navbar/statGenModal/statGenModal.jsx';
 
 import Legacy5ePHB from 'themes/Legacy/5ePHB/snippets.js';
 import V3_5ePHB   from 'themes/V3/5ePHB/snippets.js';
@@ -55,12 +57,14 @@ const Snippetbar = createReactClass({
 
 	getInitialState : function() {
 		return {
-			renderer      : this.props.renderer,
-			themeSelector : false,
-			snippets      : [],
-			showHistory   : false,
-			historyExists : false,
-			historyItems  : []
+			renderer        : this.props.renderer,
+			themeSelector   : false,
+			snippets        : [],
+			showHistory     : false,
+			historyExists   : false,
+			historyItems    : [],
+			showDndImport   : false,
+		showStatGen     : false
 		};
 	},
 
@@ -280,9 +284,55 @@ const Snippetbar = createReactClass({
 		);
 	},
 
+	renderDndImport : function(){
+		if(this.props.view !== 'text') return null;
+
+		return <>
+			<div className='snippetGroup snippetBarButton dndImport'
+				onClick={()=>this.setState({ showDndImport: true })}>
+				<div className='text'>
+					<i className='fas fa-dragon' />
+					<span className='groupName'>D&D Import</span>
+				</div>
+			</div>
+			{this.state.showDndImport && (
+				<DndImportModal
+					onInsert={(text)=>{
+						this.props.onInject(text);
+					}}
+					onClose={()=>this.setState({ showDndImport: false })}
+				/>
+			)}
+		</>;
+	},
+
+	renderStatGen : function(){
+		if(this.props.view !== 'text') return null;
+
+		return <>
+			<div className='snippetGroup snippetBarButton statGen'
+				onClick={()=>this.setState({ showStatGen: true })}>
+				<div className='text'>
+					<i className='fas fa-hat-wizard' />
+					<span className='groupName'>Stat Gen</span>
+				</div>
+			</div>
+			{this.state.showStatGen && (
+				<StatGenModal
+					onInsert={(text)=>{
+						this.props.onInject(text);
+					}}
+					onClose={()=>this.setState({ showStatGen: false })}
+				/>
+			)}
+		</>;
+	},
+
 	render : function(){
 		return <div className='snippetBar'>
 			{this.renderSnippetGroups()}
+			{this.renderDndImport()}
+			{this.renderStatGen()}
 			{this.renderEditorButtons()}
 		</div>;
 	}

@@ -1,0 +1,612 @@
+@sg-purple: #6B21A8;
+@sg-purple-light: #7C3AED;
+
+// Reset dialog defaults
+dialog.statGenModal {
+	position      : fixed;
+	top           : 0;
+	left          : 0;
+	right         : 0;
+	bottom        : 0;
+	width          : 100%;
+	height         : 100%;
+	max-width      : 100%;
+	max-height     : 100%;
+	margin         : 0;
+	padding        : 0;
+	border         : none;
+	background     : transparent;
+	overflow       : hidden;
+
+	&::backdrop {
+		background : rgba(0, 0, 0, 0.5);
+	}
+}
+
+.sgModalInner {
+	position         : absolute;
+	top              : 50%;
+	left             : 50%;
+	transform        : translate(-50%, -50%);
+	width            : 900px;
+	max-width        : 92vw;
+	height           : 620px;
+	max-height       : 85vh;
+	display          : flex;
+	flex-direction   : column;
+	background-color : #fafafa;
+	border-radius    : 10px;
+	box-shadow       : 0 12px 48px rgba(0, 0, 0, 0.35);
+	overflow         : hidden;
+}
+
+// Header
+.sgHeader {
+	display          : flex;
+	justify-content  : space-between;
+	align-items      : center;
+	padding          : 14px 20px;
+	background       : @sg-purple;
+	color            : white;
+	flex-shrink      : 0;
+
+	h2 {
+		margin      : 0;
+		font-size   : 17px;
+		font-weight : 600;
+		i { margin-right : 8px; }
+	}
+
+	.sgCloseBtn {
+		padding    : 4px 8px;
+		font-size  : 16px;
+		color      : white;
+		background : transparent;
+		border     : none;
+		cursor     : pointer;
+		opacity    : 0.7;
+		&:hover { opacity : 1; }
+	}
+}
+
+// Main body — split panel
+.sgBody {
+	display    : flex;
+	flex       : 1;
+	overflow   : hidden;
+	min-height : 0;
+}
+
+// Left: form
+.sgForm {
+	width        : 300px;
+	flex-shrink  : 0;
+	overflow-y   : auto;
+	border-right : 1px solid #e0e0e0;
+	background   : #fcfcfc;
+	padding      : 16px;
+	display      : flex;
+	flex-direction : column;
+	gap          : 12px;
+
+	.sgFormGroup {
+		display        : flex;
+		flex-direction : column;
+		gap            : 4px;
+
+		> label {
+			font-size   : 12px;
+			font-weight : 600;
+			color       : #555;
+			text-transform : uppercase;
+			letter-spacing : 0.3px;
+		}
+
+		.sgRequired {
+			color : #c0392b;
+		}
+
+		input[type='text'],
+		select,
+		textarea {
+			padding       : 7px 10px;
+			font-size     : 13px;
+			border        : 1px solid #ddd;
+			border-radius : 4px;
+			background    : white;
+			color         : #333;
+			outline       : none;
+			transition    : border-color 0.15s;
+
+			&:focus {
+				border-color : @sg-purple;
+			}
+
+			&::placeholder { color : #bbb; }
+		}
+
+		textarea {
+			resize    : vertical;
+			min-height: 60px;
+		}
+
+		select {
+			cursor : pointer;
+		}
+	}
+
+	.sgFormRow {
+		display : flex;
+		gap     : 10px;
+
+		.sgFormGroup {
+			flex : 1;
+		}
+	}
+
+	.sgRadioGroup {
+		display : flex;
+		gap     : 16px;
+
+		.sgRadio {
+			display     : flex;
+			align-items : center;
+			gap         : 5px;
+			font-size   : 13px;
+			color       : #555;
+			cursor      : pointer;
+			text-transform : none;
+			letter-spacing : 0;
+			font-weight    : 400;
+
+			input[type='radio'] {
+				accent-color : @sg-purple;
+			}
+		}
+	}
+
+	.sgDivider {
+		height        : 1px;
+		background    : #e0e0e0;
+		margin        : 4px 0;
+	}
+
+	.sgCheckbox {
+		display     : flex;
+		align-items : center;
+		gap         : 8px;
+		font-size   : 13px;
+		color       : #555;
+		cursor      : pointer;
+
+		input[type='checkbox'] {
+			accent-color : @sg-purple;
+			width        : 15px;
+			height       : 15px;
+			cursor       : pointer;
+		}
+
+		span {
+			user-select : none;
+		}
+	}
+
+	.sgImageOptions {
+		padding       : 8px 10px;
+		margin-top    : -6px;
+		margin-left   : 6px;
+		border-left   : 2px solid fadeout(@sg-purple, 70%);
+		display       : flex;
+		flex-direction: column;
+		gap           : 6px;
+
+		.sgImageOptRow {
+			display     : flex;
+			align-items : center;
+			gap         : 8px;
+
+			.sgSmallLabel {
+				font-size   : 11px;
+				font-weight : 600;
+				color       : #777;
+				white-space : nowrap;
+			}
+
+			.sgSmallSelect {
+				flex          : 1;
+				padding       : 3px 6px;
+				font-size     : 11px;
+				border        : 1px solid #ddd;
+				border-radius : 3px;
+				background    : white;
+				color         : #444;
+				cursor        : pointer;
+				outline       : none;
+				&:focus { border-color : @sg-purple; }
+			}
+		}
+
+		.sgImageOptDivider {
+			height     : 1px;
+			background : #eee;
+			margin     : 2px 0;
+		}
+
+		.sgCheckboxSmall {
+			display     : flex;
+			align-items : center;
+			gap         : 6px;
+			font-size   : 11px;
+			color       : #666;
+			cursor      : pointer;
+
+			input[type='checkbox'] {
+				accent-color : @sg-purple;
+				width        : 13px;
+				height       : 13px;
+				cursor       : pointer;
+			}
+
+			span {
+				user-select : none;
+			}
+		}
+	}
+
+	.sgGenerateBtn {
+		padding       : 10px 16px;
+		font-size     : 13px;
+		font-weight   : 600;
+		color         : white;
+		background    : @sg-purple;
+		border        : none;
+		border-radius : 6px;
+		cursor        : pointer;
+		display       : flex;
+		align-items   : center;
+		justify-content : center;
+		gap           : 6px;
+		transition    : background 0.15s;
+		margin-top    : auto;
+
+		&:hover:not(:disabled) { background : @sg-purple-light; }
+		&:disabled {
+			opacity : 0.5;
+			cursor  : not-allowed;
+		}
+
+		i { font-size : 12px; }
+	}
+}
+
+// Right: preview panel
+.sgPreview {
+	flex       : 1;
+	display    : flex;
+	flex-direction : column;
+	overflow   : hidden;
+	min-width  : 0;
+	background : white;
+	position   : relative;
+
+	.sgPreviewHeader {
+		display       : flex;
+		justify-content : space-between;
+		align-items   : center;
+		padding       : 10px 16px;
+		border-bottom : 1px solid #eee;
+		background    : #fafafa;
+		flex-shrink   : 0;
+
+		h3 {
+			margin    : 0;
+			font-size : 14px;
+			font-weight: 600;
+			color     : #333;
+			overflow  : hidden;
+			text-overflow : ellipsis;
+			white-space   : nowrap;
+		}
+
+		.sgPreviewBtns {
+			display    : flex;
+			gap        : 6px;
+			flex-shrink: 0;
+
+			button {
+				padding       : 5px 10px;
+				font-size     : 11px;
+				font-weight   : 600;
+				border-radius : 4px;
+				cursor        : pointer;
+				display       : flex;
+				align-items   : center;
+				gap           : 4px;
+				transition    : all 0.15s;
+				white-space   : nowrap;
+
+				i { font-size : 10px; }
+			}
+
+			.sgCopyBtn {
+				color      : #666;
+				background : #f0f0f0;
+				border     : 1px solid #ddd;
+				&:hover { background : #e5e5e5; color : #333; }
+			}
+
+			.sgInsertBtn {
+				color        : white;
+				background   : @sg-purple;
+				border       : 1px solid @sg-purple;
+				&:hover { background : @sg-purple-light; }
+			}
+		}
+	}
+
+	.sgPreviewContent {
+		flex       : 1;
+		overflow-y : auto;
+		min-height : 0;
+
+		.sgDescriptionPreview {
+			padding       : 12px 16px;
+			border-bottom : 1px solid #eee;
+			background    : #fafaf5;
+
+			.sgDescriptionLabel {
+				font-size      : 10px;
+				font-weight    : 700;
+				color          : #999;
+				text-transform : uppercase;
+				letter-spacing : 0.5px;
+				margin-bottom  : 6px;
+				i { margin-right : 4px; }
+			}
+
+			p {
+				margin      : 0;
+				font-size   : 13px;
+				line-height : 1.5;
+				color       : #555;
+				font-style  : italic;
+			}
+		}
+
+		.sgImageLoading {
+			padding    : 12px 16px;
+			font-size  : 12px;
+			color      : @sg-purple;
+			border-bottom : 1px solid #eee;
+			i { margin-right : 6px; }
+		}
+
+		.sgImagePreview {
+			padding       : 12px 16px;
+			border-bottom : 1px solid #eee;
+
+			.sgImagePreviewTop {
+				display         : flex;
+				justify-content : space-between;
+				align-items     : center;
+				margin-bottom   : 8px;
+			}
+
+			.sgImageLabel {
+				font-size      : 10px;
+				font-weight    : 700;
+				color          : #999;
+				text-transform : uppercase;
+				letter-spacing : 0.5px;
+				i { margin-right : 4px; }
+			}
+
+			.sgRegenBtn {
+				padding       : 3px 8px;
+				font-size     : 10px;
+				font-weight   : 600;
+				color         : @sg-purple;
+				background    : transparent;
+				border        : 1px solid fadeout(@sg-purple, 50%);
+				border-radius : 3px;
+				cursor        : pointer;
+				display       : flex;
+				align-items   : center;
+				gap           : 4px;
+				transition    : all 0.15s;
+
+				&:hover {
+					color        : white;
+					background   : @sg-purple;
+					border-color : @sg-purple;
+				}
+
+				i { font-size : 9px; }
+			}
+
+			img {
+				max-width     : 100%;
+				max-height    : 200px;
+				border-radius : 4px;
+				border        : 1px solid #eee;
+			}
+		}
+
+		.sgPreviewCode {
+			margin      : 0;
+			padding     : 14px 16px;
+			font-family : 'Courier New', Courier, monospace;
+			font-size   : 11px;
+			line-height : 1.6;
+			color       : #444;
+			white-space : pre-wrap;
+			word-wrap   : break-word;
+			background  : #fefefe;
+			tab-size    : 2;
+		}
+	}
+
+	// Regenerate prompt overlay
+	.sgRegenOverlay {
+		position   : absolute;
+		top        : 0;
+		left       : 0;
+		right      : 0;
+		bottom     : 0;
+		background : rgba(0, 0, 0, 0.4);
+		display    : flex;
+		align-items     : center;
+		justify-content : center;
+		z-index    : 10;
+	}
+
+	.sgRegenPanel {
+		width            : 90%;
+		max-width        : 480px;
+		background       : white;
+		border-radius    : 8px;
+		box-shadow       : 0 8px 32px rgba(0, 0, 0, 0.25);
+		overflow         : hidden;
+
+		.sgRegenHeader {
+			display         : flex;
+			justify-content : space-between;
+			align-items     : center;
+			padding         : 12px 16px;
+			background      : #f5f5f5;
+			border-bottom   : 1px solid #e0e0e0;
+
+			h4 {
+				margin      : 0;
+				font-size   : 14px;
+				font-weight : 600;
+				color       : #333;
+				i { margin-right : 6px; color : @sg-purple; }
+			}
+
+			.sgCloseBtn {
+				padding    : 2px 6px;
+				font-size  : 14px;
+				color      : #999;
+				background : transparent;
+				border     : none;
+				cursor     : pointer;
+				&:hover { color : #333; }
+			}
+		}
+
+		.sgRegenTextarea {
+			display    : block;
+			width      : 100%;
+			padding    : 12px 16px;
+			font-size  : 13px;
+			line-height: 1.5;
+			border     : none;
+			outline    : none;
+			resize     : vertical;
+			min-height : 100px;
+			color      : #333;
+			font-family: inherit;
+			box-sizing : border-box;
+
+			&:focus {
+				background : #fafafe;
+			}
+		}
+
+		.sgRegenActions {
+			display         : flex;
+			justify-content : flex-end;
+			gap             : 8px;
+			padding         : 10px 16px;
+			border-top      : 1px solid #eee;
+			background      : #fafafa;
+
+			button {
+				padding       : 6px 14px;
+				font-size     : 12px;
+				font-weight   : 600;
+				border-radius : 4px;
+				cursor        : pointer;
+				display       : flex;
+				align-items   : center;
+				gap           : 5px;
+				transition    : all 0.15s;
+			}
+
+			.sgRegenCancel {
+				color      : #666;
+				background : white;
+				border     : 1px solid #ddd;
+				&:hover { background : #f0f0f0; }
+			}
+
+			.sgRegenSubmit {
+				color      : white;
+				background : @sg-purple;
+				border     : 1px solid @sg-purple;
+				&:hover { background : @sg-purple-light; }
+				i { font-size : 11px; }
+			}
+		}
+	}
+}
+
+// Placeholder states
+.sgPlaceholder {
+	display        : flex;
+	flex-direction : column;
+	align-items    : center;
+	justify-content: center;
+	height         : 100%;
+	gap            : 10px;
+	color          : #ccc;
+
+	i {
+		font-size : 32px;
+	}
+
+	span {
+		font-size : 13px;
+	}
+}
+
+// Error
+.sgError {
+	padding    : 10px 16px;
+	font-size  : 13px;
+	color      : #c0392b;
+	background : #fdf2f2;
+	border-bottom : 1px solid #f5c6cb;
+	flex-shrink: 0;
+
+	i { margin-right : 6px; }
+}
+
+// Footer
+.sgFooter {
+	display       : flex;
+	justify-content : space-between;
+	align-items   : center;
+	padding       : 10px 20px;
+	background    : #f5f5f5;
+	border-top    : 1px solid #e0e0e0;
+	flex-shrink   : 0;
+
+	.sgCredit {
+		font-size : 11px;
+		color     : #aaa;
+	}
+
+	.sgFooterClose {
+		padding       : 7px 18px;
+		font-size     : 12px;
+		font-weight   : 500;
+		color         : #666;
+		background    : white;
+		border        : 1px solid #ddd;
+		border-radius : 5px;
+		cursor        : pointer;
+		&:hover { background : #f0f0f0; color : #333; }
+	}
+}
